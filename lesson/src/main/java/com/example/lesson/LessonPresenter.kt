@@ -9,7 +9,7 @@ import java.util.*
 
 class LessonPresenter(private val activity: LessonActivity) {
     private var lessons: List<Lesson> = ArrayList()
-    private val type = object : TypeToken<List<Lesson?>?>() {}.type
+    private val type = object : TypeToken<List<Lesson>>() {}.type
     fun fetchData() {
         HttpClient.INSTANCE[LESSON_PATH, type, object : EntityCallback<List<Lesson>> {
             override fun onFailure(message: String?) {
@@ -17,7 +17,8 @@ class LessonPresenter(private val activity: LessonActivity) {
             }
 
             override fun onSuccess(entity: List<Lesson>) {
-                activity.runOnUiThread { activity.showResult(lessons)
+                activity.runOnUiThread {
+                    activity.showResult(lessons)
                 }
             }
         }]

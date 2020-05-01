@@ -21,16 +21,24 @@ class LessonActivity : AppCompatActivity(), BaseView<LessonPresenter?>, Toolbar.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lesson)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.inflateMenu(R.menu.menu_lesson)
-        toolbar.setOnMenuItemClickListener(this)
-        val recyclerView = findViewById<RecyclerView>(R.id.list)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = lessonAdapter
-        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
-        refreshLayout = findViewById(R.id.swipe_refresh_layout)
-        refreshLayout.setOnRefreshListener { presenter.fetchData() }
-        refreshLayout.setRefreshing(true)
+
+        findViewById<Toolbar>(R.id.toolbar).let {
+            it.inflateMenu(R.menu.menu_lesson)
+            it.setOnMenuItemClickListener(this)
+
+        }
+
+        findViewById<RecyclerView>(R.id.list).let {
+            it.layoutManager = LinearLayoutManager(this)
+            it.adapter = lessonAdapter
+            it.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
+        }
+
+        refreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout).apply {
+            setOnRefreshListener { presenter.fetchData() }
+            isRefreshing = true
+        }
+
         presenter.fetchData()
     }
 
